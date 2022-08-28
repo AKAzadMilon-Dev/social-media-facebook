@@ -5,6 +5,6 @@ app.get('/', function (req, res) {
   res.send('Hello World')
 })
 
-console.log("connected")
-
-app.listen(3000)
+app.listen(8000, ()=>{
+    console.log("server connected for 8ooo")
+})
