@@ -9,6 +9,7 @@ dotenv.config();
 
 // Middileware
 app.use(cors());
+app.use(express.json());
 
 // Routes
 readdirSync('./routes').map((fileName) => app.use('/', require('./routes/'+fileName)));
