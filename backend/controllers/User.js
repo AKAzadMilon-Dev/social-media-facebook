@@ -1,6 +1,7 @@
 const {
   validationEmail,
   validationLength,
+  validationUsername,
 } = require("../helpers/Validation.js");
 const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
@@ -10,7 +11,6 @@ exports.register = async (req, res) => {
     const {
       first_name,
       last_name,
-      username,
       email,
       password,
       birthYear,
@@ -33,13 +33,13 @@ exports.register = async (req, res) => {
     }
 
     // Text length check
-    if (!validationLength(first_name,3,30)) {
+    if (!validationLength(first_name, 3, 30)) {
       return res.status(400).json({
         message: "Your First name must be min 3 letter and max 30 letter",
       });
     }
 
-    if (!validationLength(last_name,3,30)) {
+    if (!validationLength(last_name, 3, 30)) {
       return res.status(400).json({
         message: "Your last name must be min 3 letter and max 30 letter",
       });
@@ -51,17 +51,19 @@ exports.register = async (req, res) => {
         .json({ message: "Your password must be 6 characters" });
     }
 
+    // password cryption
     const cryptPassword = await bcrypt.hash(password, 12);
-    console.log(cryptPassword);
 
-    return;
-
+    // Unique username generation 
+    const tempUsername = first_name + last_name;
+    const newUsername = await validationUsername(tempUsername);
+    
     const user = await new User({
       first_name,
       last_name,
-      username,
+      username: newUsername,
       email,
-      password,
+      password: cryptPassword,
       birthYear,
       birthMonth,
       birthDay,
