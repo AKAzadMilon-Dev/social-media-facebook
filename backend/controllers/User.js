@@ -5,6 +5,7 @@ const {
 } = require("../helpers/Validation.js");
 const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
+const { generateToken } = require("../helpers/Tokens.js");
 
 exports.register = async (req, res) => {
   try {
@@ -54,10 +55,10 @@ exports.register = async (req, res) => {
     // password cryption
     const cryptPassword = await bcrypt.hash(password, 12);
 
-    // Unique username generation 
+    // Unique username generation
     const tempUsername = first_name + last_name;
     const newUsername = await validationUsername(tempUsername);
-    
+
     const user = await new User({
       first_name,
       last_name,
@@ -69,6 +70,9 @@ exports.register = async (req, res) => {
       birthDay,
       gender,
     }).save();
+
+    const emailVarificationToken = generateToken({ id: user._id }, "30m");
+    console.log(emailVarificationToken);
 
     res.json(user);
   } catch (error) {
