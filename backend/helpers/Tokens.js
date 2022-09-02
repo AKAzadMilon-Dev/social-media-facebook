@@ -5,3 +5,4 @@ exports.generateToken = (payload, expired)=>{
         expiresIn: expired,
     });
 };
+
