@@ -78,7 +78,6 @@ exports.register = async (req, res) => {
     sendVerificationEmail(user.email, user.first_name, url);
 
     const token = generateToken({ id: user._id.toString() }, "7d");
-
     res.send({
       id: user._id,
       username: user.username,
@@ -106,6 +105,36 @@ exports.activateAccount = async (req, res) => {
       await User.findByIdAndUpdate(user.id, { verified: true });
       return res.status(200).json({ message: "Account has been activated" });
     }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "This email is not connected to an account" });
+    }
+    const check = await bcrypt.compare(password, user.password);
+    if (!check) {
+      return res
+        .status(400)
+        .json({ message: "Invalid password. please try again." });
+    }
+    const token = generateToken({ id: user._id.toString() }, "7d");
+    res.send({
+      id: user._id,
+      username: user.username,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      verified: user.verified,
+      token: token,
+      message: "Login Success",
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
