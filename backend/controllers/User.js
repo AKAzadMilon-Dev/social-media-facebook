@@ -80,14 +80,13 @@ exports.register = async (req, res) => {
 
     res.send({
       id: user._id,
-      username: username,
-      first_name: first_name,
-      last_name: last_name,
-      token: token,
+      username: user.username,
+      first_name: user.first_name,
+      last_name: user.last_name,
       verified: user.verified,
+      token: token,
       message: "Register Success! Activate your email to start",
     });
-    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
