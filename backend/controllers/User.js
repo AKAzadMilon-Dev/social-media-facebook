@@ -87,6 +87,7 @@ exports.register = async (req, res) => {
       verified: user.verified,
       message: "Register Success! Activate your email to start",
     });
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
