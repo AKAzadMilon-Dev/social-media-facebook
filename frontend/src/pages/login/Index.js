@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [emailError, setEmailError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+
+  const handleLogin = ()=>{
+    if(!email){
+      setEmailError("Email is required")
+    }
+    if(!password){
+      setPasswordError("Password is required")
+    }
+  }
+
   return (
     <div className="max-w-logocontainer mx-auto md:flex justify-between px-2.5">
       <div className=" md:w-[523px] text-center md:text-left md:mt-[183px]">
@@ -17,18 +32,23 @@ const Login = () => {
       <div className="md:w-[473px] mt-[10px] md:mt-[141px]">
         <div className="w-full bg-white shadow-md  p-4">
           <input
+            onClick={(e)=>setEmail(e.target.value)}
             className="w-full py-[26px] px-4 border border-bordercolor rounded-md"
             type="text"
             name="email"
             placeholder="Email address"
           />
+          {emailError}
           <input
+            onClick={(e)=>setPassword(e.target.value)}
             className="w-full py-[26px] px-4 my-[15px] border border-bordercolor rounded-md"
             type="password"
             name="password"
             placeholder="Password"
           />
+          {passwordError}
           <button
+            onClick={handleLogin}
             className="bg-[#1877F2] rounded-md py-6 text-center w-full font-inter font-semibold text-white "
             type="submit"
           >
