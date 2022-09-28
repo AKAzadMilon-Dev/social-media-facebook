@@ -8,6 +8,14 @@ const Login = () => {
   const [emailError, setEmailError] = useState("")
   const [passwordError, setPasswordError] = useState("")
 
+  const handleEmail = (e)=>{
+    setEmail(e.target.value)
+  }
+
+  const handlePassword = (e)=>{
+    setPassword(e.target.value)
+  }
+
   const handleLogin = ()=>{
     if(!email){
       setEmailError("Email is required")
@@ -32,21 +40,21 @@ const Login = () => {
       <div className="md:w-[473px] mt-[10px] md:mt-[141px]">
         <div className="w-full bg-white shadow-md  p-4">
           <input
-            onClick={(e)=>setEmail(e.target.value)}
+            onChange={handleEmail}
             className="w-full py-[26px] px-4 border border-bordercolor rounded-md"
             type="text"
             name="email"
             placeholder="Email address"
           />
-          {emailError}
+          <p className="text-rose-500 font-inter font-medium text-base pt-3 text-center">{emailError}</p>
           <input
-            onClick={(e)=>setPassword(e.target.value)}
+            onChange={handlePassword}
             className="w-full py-[26px] px-4 my-[15px] border border-bordercolor rounded-md"
             type="password"
             name="password"
             placeholder="Password"
           />
-          {passwordError}
+          <p className="text-rose-500 font-inter font-medium text-base pb-4 text-center">{passwordError}</p>
           <button
             onClick={handleLogin}
             className="bg-[#1877F2] rounded-md py-6 text-center w-full font-inter font-semibold text-white "
