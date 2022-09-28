@@ -2,28 +2,33 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [emailError, setEmailError] = useState("")
-  const [passwordError, setPasswordError] = useState("")
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+    setEmailError("");
+  };
 
-  const handleEmail = (e)=>{
-    setEmail(e.target.value)
-  }
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+    setPasswordError("");
+  };
 
-  const handlePassword = (e)=>{
-    setPassword(e.target.value)
-  }
-
-  const handleLogin = ()=>{
-    if(!email){
-      setEmailError("Email is required")
+  const handleLogin = () => {
+    if (
+      !email
+        .toLowerCase()
+        .match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+    ) {
+      setEmailError("Email is required");
     }
-    if(!password){
-      setPasswordError("Password is required")
+    if (!password) {
+      setPasswordError("Password is required");
     }
-  }
+  };
 
   return (
     <div className="max-w-logocontainer mx-auto md:flex justify-between px-2.5">
@@ -46,7 +51,11 @@ const Login = () => {
             name="email"
             placeholder="Email address"
           />
-          <p className="text-rose-500 font-inter font-medium text-base pt-3 text-center">{emailError}</p>
+          {emailError && (
+            <p className="text-rose-500 font-inter font-medium text-base pt-3 text-center">
+              {emailError}
+            </p>
+          )}
           <input
             onChange={handlePassword}
             className="w-full py-[26px] px-4 my-[15px] border border-bordercolor rounded-md"
@@ -54,7 +63,11 @@ const Login = () => {
             name="password"
             placeholder="Password"
           />
-          <p className="text-rose-500 font-inter font-medium text-base pb-4 text-center">{passwordError}</p>
+          {passwordError && (
+            <p className="text-rose-500 font-inter font-medium text-base pb-4 text-center">
+              {passwordError}
+            </p>
+          )}
           <button
             onClick={handleLogin}
             className="bg-[#1877F2] rounded-md py-6 text-center w-full font-inter font-semibold text-white "
