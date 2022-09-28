@@ -31,6 +31,16 @@ const Login = () => {
     }
     if (!password) {
       setPasswordError("Password is required");
+    }else if(!password.match(/^(?=.*[a-z])/)){
+      setPasswordError("Password must be at least 1 lowercase character")
+    }else if(!password.match(/^(?=.*[A-Z])/)){
+      setPasswordError("Password must be at least 1 uppercase character")
+    }else if(!password.match(/^(?=.*[0-9])/)){
+      setPasswordError("Password must be at least 1 numeric character")
+    }else if(!password.match(/^(?=.*[!@#$%^&*])/)){
+      setPasswordError("Password must be at least 1 special character")
+    }else if(!password.match(/^(?=.{8,})/)){
+      setPasswordError("Password must be at least 8 character")
     }
   };
 
