@@ -18,12 +18,16 @@ const Login = () => {
   };
 
   const handleLogin = () => {
-    if (
-      !email
-        .toLowerCase()
-        .match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
-    ) {
+    if (!email) {
       setEmailError("Email is required");
+    } else {
+      if (
+        !email
+          .toLowerCase()
+          .match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+      ) {
+        setEmailError("Valid email is required")
+      }
     }
     if (!password) {
       setPasswordError("Password is required");
