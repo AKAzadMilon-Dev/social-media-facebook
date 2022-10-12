@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { RiEyeCloseFill, RiEyeFill } from "react-icons/ri";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -26,22 +28,26 @@ const Login = () => {
           .toLowerCase()
           .match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
       ) {
-        setEmailError("Valid email is required")
+        setEmailError("Valid email is required");
       }
     }
     if (!password) {
       setPasswordError("Password is required");
-    }else if(!password.match(/^(?=.*[a-z])/)){
-      setPasswordError("Password must be at least 1 lowercase character")
-    }else if(!password.match(/^(?=.*[A-Z])/)){
-      setPasswordError("Password must be at least 1 uppercase character")
-    }else if(!password.match(/^(?=.*[0-9])/)){
-      setPasswordError("Password must be at least 1 numeric character")
-    }else if(!password.match(/^(?=.*[!@#$%^&*])/)){
-      setPasswordError("Password must be at least 1 special character")
-    }else if(!password.match(/^(?=.{8,})/)){
-      setPasswordError("Password must be at least 8 character")
+    } else if (!password.match(/^(?=.*[a-z])/)) {
+      setPasswordError("Password must be at least 1 lowercase character");
+    } else if (!password.match(/^(?=.*[A-Z])/)) {
+      setPasswordError("Password must be at least 1 uppercase character");
+    } else if (!password.match(/^(?=.*[0-9])/)) {
+      setPasswordError("Password must be at least 1 numeric character");
+    } else if (!password.match(/^(?=.*[!@#$%^&*])/)) {
+      setPasswordError("Password must be at least 1 special character");
+    } else if (!password.match(/^(?=.{8,})/)) {
+      setPasswordError("Password must be at least 8 character");
     }
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -70,13 +76,26 @@ const Login = () => {
               {emailError}
             </p>
           )}
-          <input
-            onChange={handlePassword}
-            className="w-full py-[26px] px-4 my-[15px] border border-bordercolor rounded-md"
-            type="password"
-            name="password"
-            placeholder="Password"
-          />
+          <div className="relative">
+            <input
+              onChange={handlePassword}
+              className="w-full py-[26px] px-4 my-[15px] border border-bordercolor rounded-md"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+            />
+            {showPassword ? (
+              <RiEyeFill
+                onClick={handleShowPassword}
+                className="absolute top-12 right-3.5 cursor-pointer"
+              />
+            ) : (
+              <RiEyeCloseFill
+                onClick={handleShowPassword}
+                className="absolute top-12 right-3.5 cursor-pointer"
+              />
+            )}
+          </div>
           {passwordError && (
             <p className="text-rose-500 font-inter font-medium text-base pb-4 text-center">
               {passwordError}
@@ -97,12 +116,12 @@ const Login = () => {
           </Link>
           <p className="w-full border  "></p>
           <div className="flex justify-center">
-            <button
-              className="bg-[#42B72A] py-6 px-11 rounded-md mt-6 font-inter font-semibold text-[16px] text-white"
+            <Link to="/registration"
+              className="bg-[#42B72A] py-6 px-11 rounded-md mt-6 font-inter font-semibold text-[16px] text-white inline-block"
               type="submit"
             >
               Create new account
-            </button>
+            </Link>
           </div>
         </div>
       </div>
