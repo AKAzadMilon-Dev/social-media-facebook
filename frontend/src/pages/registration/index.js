@@ -15,9 +15,13 @@ const Registration = () => {
   const [errorPassword, setErrorPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [closs, setCloss] = useState(false);
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
+  const [date, setDate] = useState(new Date().getDate());
+  const [bDate, setBdate] = useState("");
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [bMonth, setBmonth] = useState("");
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [bYear, setByear] = useState("");
+  const [gender, setGender] = useState("");
   const [male, setMale] = useState("");
   const [female, setFemale] = useState("");
   const [custom, setCustom] = useState("");
@@ -49,17 +53,17 @@ const Registration = () => {
   const handleRegistration = () => {
     if (!firstName) {
       setErrorFirstName("First name is requird!");
-    }else{
-      if(firstName.length < 3 ){
-        setErrorFirstName("Full Name must be 3 character!")
+    } else {
+      if (firstName.length < 3) {
+        setErrorFirstName("Full Name must be 3 character!");
       }
     }
 
     if (!surname) {
       setErrorSurName("Surname is requird!");
-    }else{
-      if(surname.length < 4){
-        setErrorSurName("Surname must be 4 character!")
+    } else {
+      if (surname.length < 4) {
+        setErrorSurName("Surname must be 4 character!");
       }
     }
 
@@ -89,6 +93,26 @@ const Registration = () => {
       setErrorPassword("Password must be at least 8 character");
     }
   };
+
+  const years = Array.from(new Array(70), (val, index) => year - index);
+  const months = Array.from(new Array(12), (val, index) => 1 + index);
+  const dates = Array.from(new Array(31), (val, index) => 1 + index);
+  console.log(dates);
+
+  const handleYear = (e) => {
+    setByear(e.target.value);
+  };
+
+  const handleMonth = (e) => {
+    setBmonth(e.target.value);
+  };
+
+  const handleDate = (e) => {
+    console.log(e.target.value)
+    setBdate(e.target.value);
+  };
+
+
 
   return (
     <div className="flex justify-center ">
@@ -181,22 +205,48 @@ const Registration = () => {
           </p>
           <div className="flex justify-between mt-1.5">
             <div className="relative">
-              <select className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md py-2.3 px-4 outline-none appearance-none ">
-                <option>0</option>
+              <select onChange={handleDate} className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md py-2.3 px-4 outline-none appearance-none ">
+              {dates.map((item, index) => (
+                  <option value={item} key={index}>
+                    {item}
+                  </option>
+                ))}
               </select>
               <FaAngleDown className="absolute top-[14px] left-[127px] text-lg text-[#4F4F4F] " />
             </div>
 
             <div className="relative">
-              <select className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md px-4 outline-none appearance-none">
-                <option>Oct</option>
+              <select onChange={handleMonth} className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md px-4 outline-none appearance-none">
+                {months.map((item, index) => (
+                  <option value={item} key={index}>
+                    {item == 1 && "January"}
+                    {item == 2 && "February"}
+                    {item == 3 && "March"}
+                    {item == 4 && "April"}
+                    {item == 5 && "May"}
+                    {item == 6 && "June"}
+                    {item == 7 && "July"}
+                    {item == 8 && "August"}
+                    {item == 9 && "Septembar"}
+                    {item == 10 && "Octobar"}
+                    {item == 11 && "Novembar"}
+                    {item == 12 && "Decembar"}
+                  </option>
+                ))}
               </select>
               <FaAngleDown className="absolute top-[14px] left-[127px] text-lg text-[#4F4F4F] " />
             </div>
 
             <div className="relative">
-              <select className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md px-4 outline-none appearance-none">
-                <option>2022</option>
+              <select
+                onChange={handleYear}
+                className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md px-4 outline-none appearance-none"
+              >
+                {years.map((item, index) => (
+                  <option value={item} key={index}>
+                    {item}
+                  </option>
+                ))}
               </select>
               <FaAngleDown className="absolute top-[14px] left-[127px] text-lg text-[#4F4F4F] " />
             </div>
