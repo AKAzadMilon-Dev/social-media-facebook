@@ -1,10 +1,95 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsQuestionCircleFill } from "react-icons/bs";
-import { IoMdRadioButtonOff } from "react-icons/io";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaAngleDown } from "react-icons/fa";
+import { RiEyeCloseFill, RiEyeFill } from "react-icons/ri";
 
 const Registration = () => {
+  const [firstName, setFirstName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorFirstName, setErrorFirstName] = useState("");
+  const [errorSurName, setErrorSurName] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [closs, setCloss] = useState(false);
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+  const [male, setMale] = useState("");
+  const [female, setFemale] = useState("");
+  const [custom, setCustom] = useState("");
+
+  const handleFirstName = (e) => {
+    setFirstName(e.target.value);
+    setErrorFirstName("");
+  };
+
+  const handleSurname = (e) => {
+    setSurname(e.target.value);
+    setErrorSurName("");
+  };
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+    setErrorEmail("");
+  };
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+    setErrorPassword("");
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleRegistration = () => {
+    if (!firstName) {
+      setErrorFirstName("First name is requird!");
+    }else{
+      if(firstName.length < 3 ){
+        setErrorFirstName("Full Name must be 3 character!")
+      }
+    }
+
+    if (!surname) {
+      setErrorSurName("Surname is requird!");
+    }else{
+      if(surname.length < 4){
+        setErrorSurName("Surname must be 4 character!")
+      }
+    }
+
+    if (!email) {
+      setErrorEmail("Email is required!");
+    } else {
+      if (
+        !email
+          .toLowerCase()
+          .match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+      ) {
+        setErrorEmail("Valid email is required!");
+      }
+    }
+
+    if (!password) {
+      setErrorPassword("Password is required");
+    } else if (!password.match(/^(?=.*[a-z])/)) {
+      setErrorPassword("Password must be at least 1 lowercase character");
+    } else if (!password.match(/^(?=.*[A-Z])/)) {
+      setErrorPassword("Password must be at least 1 uppercase character");
+    } else if (!password.match(/^(?=.*[0-9])/)) {
+      setErrorPassword("Password must be at least 1 numeric character");
+    } else if (!password.match(/^(?=.*[!@#$%^&*])/)) {
+      setErrorPassword("Password must be at least 1 special character");
+    } else if (!password.match(/^(?=.{8,})/)) {
+      setErrorPassword("Password must be at least 8 character");
+    }
+  };
+
   return (
     <div className="flex justify-center ">
       <div className=" w-[545px] shadow-md p-5 relative ">
@@ -19,28 +104,75 @@ const Registration = () => {
         </button>
         <p className=" w-full border-b border-solid mt-4"></p>
         <div className="mt-5 flex justify-between">
-          <input
-            className=" w-[242px] h-[51px] font-inter font-medium text-lg text-[#989A9E] border border-[#D8DBDF] rounded-md px-5 outline-none"
-            type="text"
-            placeholder="First Name"
-          />
-          <input
-            className=" w-[242px] h-[51px] font-inter font-medium text-lg text-[#989A9E] border border-[#D8DBDF] rounded-md px-5 outline-none"
-            type="text"
-            placeholder="Surname"
-          />
+          <div>
+            <input
+              onChange={handleFirstName}
+              className=" w-[242px] h-[51px] font-inter font-medium text-lg text-[#989A9E] border border-[#D8DBDF] rounded-md px-5 outline-none"
+              type="text"
+              name="firstname"
+              placeholder="First Name"
+            />
+            {errorFirstName && (
+              <p className="text-rose-500 font-inter font-medium text-base pt-3">
+                {errorFirstName}
+              </p>
+            )}
+          </div>
+          <div>
+            <input
+              onChange={handleSurname}
+              className=" w-[242px] h-[51px] font-inter font-medium text-lg text-[#989A9E] border border-[#D8DBDF] rounded-md px-5 outline-none"
+              type="text"
+              name="surname"
+              placeholder="Surname"
+            />
+            {errorSurName && (
+              <p className="text-rose-500 font-inter font-medium text-base pt-3">
+                {errorSurName}
+              </p>
+            )}
+          </div>
         </div>
         <div>
-          <input
-            className=" w-full h-[51px] font-inter font-medium text-lg text-[#989A9E] border border-[#D8DBDF] rounded-md px-5 mt-3.5 outline-none"
-            type="text"
-            placeholder="Mobile number or email address"
-          />
-          <input
-            className=" w-full h-[51px] font-inter font-medium text-lg text-[#989A9E] border border-[#D8DBDF] rounded-md px-5 mt-3.5 outline-none"
-            type="text"
-            placeholder="New password"
-          />
+          <div>
+            <input
+              onChange={handleEmail}
+              className=" w-full h-[51px] font-inter font-medium text-lg text-[#989A9E] border border-[#D8DBDF] rounded-md px-5 mt-3.5 outline-none"
+              type="text"
+              name="email"
+              placeholder="Mobile number or email address"
+            />
+            {errorEmail && (
+              <p className="text-rose-500 font-inter font-medium text-base pt-3">
+                {errorEmail}
+              </p>
+            )}
+          </div>
+          <div className="relative">
+            <input
+              onChange={handlePassword}
+              className=" w-full h-[51px] font-inter font-medium text-lg text-[#989A9E] border border-[#D8DBDF] rounded-md px-5 mt-3.5 outline-none"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="New password"
+            />
+            {errorPassword && (
+              <p className="text-rose-500 font-inter font-medium text-base pt-3">
+                {errorPassword}
+              </p>
+            )}
+            {showPassword ? (
+              <RiEyeFill
+                onClick={handleShowPassword}
+                className="absolute top-8 right-3.5 cursor-pointer text-[#848484]"
+              />
+            ) : (
+              <RiEyeCloseFill
+                onClick={handleShowPassword}
+                className="absolute top-8 right-3.5 cursor-pointer text-[#848484]"
+              />
+            )}
+          </div>
         </div>
         <div className="relative">
           <p className=" font-inter font-normal text-lg text-[#606770] mt-4">
@@ -70,6 +202,7 @@ const Registration = () => {
             </div>
           </div>
         </div>
+
         <div className="relative mt-5">
           <p className=" font-inter font-normal text-lg text-[#606770] mt-4">
             Gender{" "}
@@ -86,6 +219,7 @@ const Registration = () => {
                 <input
                   className="absolute top-[16px] right-[14px]  "
                   type="radio"
+                  name="gender"
                 />
               </div>
             </label>
@@ -99,6 +233,7 @@ const Registration = () => {
                 <input
                   className="absolute top-[16px] right-[14px]  "
                   type="radio"
+                  name="gender"
                 />
               </div>
             </label>
@@ -110,8 +245,9 @@ const Registration = () => {
                   </p>
                 </div>
                 <input
-                  className="absolute top-[16px] right-[14px]  "
+                  className="absolute top-[16px] right-[14px]"
                   type="radio"
+                  name="gender"
                 />
               </div>
             </label>
@@ -127,7 +263,10 @@ const Registration = () => {
           out at any time.
         </p>
         <div className="text-center mt-4">
-          <button className="w-[244px] h-[45px] font-inter font-semibold text-2xl text-white bg-[#00A400] rounded-lg">
+          <button
+            onClick={handleRegistration}
+            className="w-[244px] h-[45px] font-inter font-semibold text-2xl text-white bg-[#00A400] rounded-lg"
+          >
             Sign Up
           </button>
         </div>
