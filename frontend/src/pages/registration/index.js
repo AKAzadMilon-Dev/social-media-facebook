@@ -3,6 +3,7 @@ import { BsQuestionCircleFill } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaAngleDown } from "react-icons/fa";
 import { RiEyeCloseFill, RiEyeFill } from "react-icons/ri";
+import axios from "axios";
 
 const Registration = () => {
   const [firstName, setFirstName] = useState("");
@@ -26,90 +27,46 @@ const Registration = () => {
   const [bYearError, setByearError] = useState("");
   const [gender, setGender] = useState("");
   const [genderError, setGenderError] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleFirstName = (e) => {
     setFirstName(e.target.value);
-    setErrorFirstName("");
   };
 
   const handleSurname = (e) => {
     setSurname(e.target.value);
-    setErrorSurName("");
   };
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    setErrorEmail("");
   };
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
-    setErrorPassword("");
   };
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleRegistration = () => {
-    if (!firstName) {
-      setErrorFirstName("First name is requird!");
-    } else {
-      if (firstName.length < 3) {
-        setErrorFirstName("Full Name must be 3 character!");
-      }
-    }
-
-    if (!surname) {
-      setErrorSurName("Surname is requird!");
-    } else {
-      if (surname.length < 4) {
-        setErrorSurName("Surname must be 4 character!");
-      }
-    }
-
-    if (!email) {
-      setErrorEmail("Email is required!");
-    } else {
-      if (
-        !email
-          .toLowerCase()
-          .match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
-      ) {
-        setErrorEmail("Valid email is required!");
-      }
-    }
-
-    if (!password) {
-      setErrorPassword("Password is required");
-    } else if (!password.match(/^(?=.*[a-z])/)) {
-      setErrorPassword("Password must be at least 1 lowercase character");
-    } else if (!password.match(/^(?=.*[A-Z])/)) {
-      setErrorPassword("Password must be at least 1 uppercase character");
-    } else if (!password.match(/^(?=.*[0-9])/)) {
-      setErrorPassword("Password must be at least 1 numeric character");
-    } else if (!password.match(/^(?=.*[!@#$%^&*])/)) {
-      setErrorPassword("Password must be at least 1 special character");
-    } else if (!password.match(/^(?=.{8,})/)) {
-      setErrorPassword("Password must be at least 8 character");
-    }
-
-    if (!bDate) {
-      setBdateError("Please choose date!");
-    } else if (!bMonth) {
-      setBdateError("Please choose a month!");
-    } else if (!bYear) {
-      setBdateError("Please choose a year!");
-    } else if (bYear) {
-      if (new Date().getFullYear() - bYear < 18) {
-        setBdateError("Your age must be greater then or equal to 18!");
-      } else {
-        setBdateError("");
-      }
-    }
-
-    if (!gender) {
-      setGenderError("Please choose a gender!");
+  const handleRegistration = async () => {
+    try {
+      const { data } = await axios.post("http://localhost:8000/register", {
+        first_name: firstName,
+        last_name: surname,
+        email: email,
+        password: password,
+        birthYear: bYear,
+        birthMonth: bMonth,
+        birthDay: bDate,
+        gender: gender,
+      });
+      console.log("data", data);
+      setError("");
+      setSuccess(data.message);
+    } catch (error) {
+      setError(error.response.data.message);
     }
   };
 
@@ -135,7 +92,6 @@ const Registration = () => {
 
   const handleGender = (gender) => {
     setGender(gender);
-    setGenderError("");
   };
 
   return (
@@ -186,7 +142,7 @@ const Registration = () => {
             <input
               onChange={handleEmail}
               className=" w-full h-[51px] font-inter font-medium text-lg text-[#989A9E] border border-[#D8DBDF] rounded-md px-5 mt-3.5 outline-none"
-              type="text"
+              type="email"
               name="email"
               placeholder="Mobile number or email address"
             />
@@ -365,6 +321,16 @@ const Registration = () => {
           >
             Sign Up
           </button>
+          {error && (
+            <p className=" text-rose-500 font-inter font-medium text-base pt-3">
+              {error}
+            </p>
+          )}
+          {success && (
+            <p className=" text-emerald-600 font-inter font-medium text-base pt-3">
+              {success}
+            </p>
+          )}
         </div>
       </div>
     </div>
