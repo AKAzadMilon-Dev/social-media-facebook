@@ -107,6 +107,10 @@ const Registration = () => {
         setBdateError("");
       }
     }
+
+    if (!gender) {
+      setGenderError("Please choose a gender!");
+    }
   };
 
   const years = Array.from(new Array(70), (val, index) => year - index);
@@ -126,8 +130,12 @@ const Registration = () => {
   };
 
   const handleDate = (e) => {
-    console.log(e.target.value);
     setBdate(e.target.value);
+  };
+
+  const handleGender = (gender) => {
+    setGender(gender);
+    setGenderError("");
   };
 
   return (
@@ -300,7 +308,7 @@ const Registration = () => {
                   className="absolute top-[16px] right-[14px]  "
                   type="radio"
                   name="gender"
-                  onChange={() => setGender("Male")}
+                  onChange={() => handleGender("Male")}
                 />
               </div>
             </label>
@@ -315,7 +323,7 @@ const Registration = () => {
                   className="absolute top-[16px] right-[14px]  "
                   type="radio"
                   name="gender"
-                  onChange={() => setGender("Female")}
+                  onChange={() => handleGender("Female")}
                 />
               </div>
             </label>
@@ -330,11 +338,16 @@ const Registration = () => {
                   className="absolute top-[16px] right-[14px]"
                   type="radio"
                   name="gender"
-                  onChange={() => setGender("Custom")}
+                  onChange={() => handleGender("Custom")}
                 />
               </div>
             </label>
           </div>
+          {genderError && (
+            <p className=" text-rose-500 font-inter font-medium text-base pt-3">
+              {genderError}
+            </p>
+          )}
         </div>
         <p className="font-inter font-normal text-[13px] text-[#606770] mt-2">
           People who use our service may have uploaded your contact information
