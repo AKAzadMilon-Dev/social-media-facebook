@@ -17,14 +17,15 @@ const Registration = () => {
   const [closs, setCloss] = useState(false);
   const [date, setDate] = useState(new Date().getDate());
   const [bDate, setBdate] = useState("");
+  const [bDateError, setBdateError] = useState("");
   const [month, setMonth] = useState(new Date().getMonth());
   const [bMonth, setBmonth] = useState("");
+  const [bMonthError, setBmonthError] = useState("");
   const [year, setYear] = useState(new Date().getFullYear());
   const [bYear, setByear] = useState("");
+  const [bYearError, setByearError] = useState("");
   const [gender, setGender] = useState("");
-  const [male, setMale] = useState("");
-  const [female, setFemale] = useState("");
-  const [custom, setCustom] = useState("");
+  const [genderError, setGenderError] = useState("");
 
   const handleFirstName = (e) => {
     setFirstName(e.target.value);
@@ -92,11 +93,28 @@ const Registration = () => {
     } else if (!password.match(/^(?=.{8,})/)) {
       setErrorPassword("Password must be at least 8 character");
     }
+
+    if (!bDate) {
+      setBdateError("Please choose date!");
+    } else if (!bMonth) {
+      setBdateError("Please choose a month!");
+    } else if (!bYear) {
+      setBdateError("Please choose a year!");
+    } else if (bYear) {
+      if (new Date().getFullYear() - bYear < 18) {
+        setBdateError("Your age must be greater then or equal to 18!");
+      } else {
+        setBdateError("");
+      }
+    }
   };
 
   const years = Array.from(new Array(70), (val, index) => year - index);
   const months = Array.from(new Array(12), (val, index) => 1 + index);
-  const dates = Array.from(new Array(31), (val, index) => 1 + index);
+  const dates = Array.from(
+    new Array(new Date(bYear, bMonth, 0).getDate()),
+    (val, index) => 1 + index
+  );
   console.log(dates);
 
   const handleYear = (e) => {
@@ -108,11 +126,9 @@ const Registration = () => {
   };
 
   const handleDate = (e) => {
-    console.log(e.target.value)
+    console.log(e.target.value);
     setBdate(e.target.value);
   };
-
-
 
   return (
     <div className="flex justify-center ">
@@ -205,8 +221,12 @@ const Registration = () => {
           </p>
           <div className="flex justify-between mt-1.5">
             <div className="relative">
-              <select onChange={handleDate} className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md py-2.3 px-4 outline-none appearance-none ">
-              {dates.map((item, index) => (
+              <select
+                onChange={handleDate}
+                className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md py-2.3 px-4 outline-none appearance-none "
+              >
+                <option>Day</option>
+                {dates.map((item, index) => (
                   <option value={item} key={index}>
                     {item}
                   </option>
@@ -216,7 +236,11 @@ const Registration = () => {
             </div>
 
             <div className="relative">
-              <select onChange={handleMonth} className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md px-4 outline-none appearance-none">
+              <select
+                onChange={handleMonth}
+                className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md px-4 outline-none appearance-none"
+              >
+                <option>Month</option>
                 {months.map((item, index) => (
                   <option value={item} key={index}>
                     {item == 1 && "January"}
@@ -242,6 +266,7 @@ const Registration = () => {
                 onChange={handleYear}
                 className=" w-[155px] h-[45px] font-inter font-medium text-lg text-[#4F4F4F] border border-[#D8DBDF] rounded-md px-4 outline-none appearance-none"
               >
+                <option>Year</option>
                 {years.map((item, index) => (
                   <option value={item} key={index}>
                     {item}
@@ -252,6 +277,11 @@ const Registration = () => {
             </div>
           </div>
         </div>
+        {bDateError && (
+          <p className=" text-rose-500 font-inter font-medium text-base pt-3">
+            {bDateError}
+          </p>
+        )}
 
         <div className="relative mt-5">
           <p className=" font-inter font-normal text-lg text-[#606770] mt-4">
@@ -270,6 +300,7 @@ const Registration = () => {
                   className="absolute top-[16px] right-[14px]  "
                   type="radio"
                   name="gender"
+                  onChange={() => setGender("Male")}
                 />
               </div>
             </label>
@@ -284,6 +315,7 @@ const Registration = () => {
                   className="absolute top-[16px] right-[14px]  "
                   type="radio"
                   name="gender"
+                  onChange={() => setGender("Female")}
                 />
               </div>
             </label>
@@ -298,6 +330,7 @@ const Registration = () => {
                   className="absolute top-[16px] right-[14px]"
                   type="radio"
                   name="gender"
+                  onChange={() => setGender("Custom")}
                 />
               </div>
             </label>
